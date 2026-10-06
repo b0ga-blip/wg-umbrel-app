@@ -1,0 +1,37 @@
+manifestVersion: 1
+id: wg-mesh
+name: WireGuard Mesh
+tagline: Peer WireGuard de una malla privada
+category: networking
+version: "1.0.0"
+port: 51822
+description: >-
+  Túnel WireGuard que conecta este host como peer de una malla privada hacia
+  el hub de la malla.
+
+
+  La configuración vive en wg_confs/wg0.conf dentro de los datos de la app.
+  Tras la instalación, la config previa de /home/umbrel/umbrel/wireguard se
+  migra automáticamente si existe.
+
+
+  ⚠️ Este es un túnel punto a punto de una malla privada, NO un servidor VPN
+  para clientes. Si buscas un servidor WireGuard con UI web para tus
+  dispositivos, instala la app oficial "WireGuard" (wg-easy) del App Store.
+
+
+  La página de estado de esta app muestra el handshake y el tráfico del túnel
+  (salida de `wg show`).
+releaseNotes: ""
+icon: https://raw.githubusercontent.com/b0ga-blip/wg-umbrel-app/main/wg-mesh/icon.svg
+dependencies: []
+developer: b0ga-blip
+website: https://github.com/b0ga-blip/wg-umbrel-app
+repo: https://github.com/linuxserver/docker-wireguard
+support: https://github.com/linuxserver/docker-wireguard
+path: ""
+gallery: []
+defaultUsername: ""
+defaultPassword: ""
+submitter: b0ga-blip
+submission: https://github.com/b0ga-blip/wg-umbrel-app

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a2332"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+  </defs>
+  <!-- Fondo redondeado -->
+  <rect x="8" y="8" width="240" height="240" rx="48" fill="url(#bg)" stroke="#2d3a4f" stroke-width="4"/>
+  <!-- Escudo -->
+  <path d="M128 48 L192 72 V128 C192 168 166 196 128 212 C90 196 64 168 64 128 V72 Z"
+        fill="none" stroke="#00e676" stroke-width="10" stroke-linejoin="round"/>
+  <!-- Candado -->
+  <rect x="104" y="112" width="48" height="40" rx="8" fill="#00e676"/>
+  <path d="M112 112 V96 a16 16 0 0 1 32 0 v16" fill="none" stroke="#00e676" stroke-width="10"/>
+  <circle cx="128" cy="130" r="6" fill="#0d1117"/>
+  <rect x="125" y="130" width="6" height="14" rx="3" fill="#0d1117"/>
+</svg>

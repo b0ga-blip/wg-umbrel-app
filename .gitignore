@@ -1,0 +1,9 @@
+# Nunca subir configuraciones con claves privadas ni secretos.
+# La config WireGuard se migra localmente en el host (hook pre-start),
+# jamás viaja en este repositorio.
+*.conf
+*.key
+*.pem
+*private*
+.env
+!umbrel-app-store.yml

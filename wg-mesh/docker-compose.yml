@@ -1,0 +1,42 @@
+services:
+  app:
+    image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls124@sha256:216ca1ce9da7bfe26fb752111d952487804bd18933bbd4794970d424bf8adfe9
+    restart: unless-stopped
+    stop_grace_period: 1m
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - ${APP_DATA_DIR}/data:/config
+
+  # Página de estado: mini servidor HTTP con netcat que sirve `wg show`
+  # en el puerto del manifest (51822). Comparte el netns del host
+  # (network_mode: host) y necesita NET_ADMIN para leer la interfaz wg0.
+  # umbrelOS añade HTTPS delante de este puerto.
+  status:
+    image: lscr.io/linuxserver/wireguard:1.0.20260223-r0-ls124@sha256:216ca1ce9da7bfe26fb752111d952487804bd18933bbd4794970d424bf8adfe9
+    restart: unless-stopped
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          {
+            printf 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\n\r\n'
+            echo '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">'
+            echo '<title>WireGuard Mesh — estado</title>'
+            echo '<style>body{font-family:monospace;background:#111;color:#0f0;padding:2rem}h1{color:#fff}a{color:#0f0}</style>'
+            echo '</head><body><h1>WireGuard Mesh — estado</h1><pre>'
+            wg show 2>&1 || echo 'wg0 no está activa'
+            echo '</pre><p><a href="/">Recargar</a></p></body></html>'
+          } | nc -l -p 51822 -q 1 > /dev/null 2>&1
+        done
+    volumes:
+      - /lib/modules:/lib/modules:ro

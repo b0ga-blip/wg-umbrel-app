@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Migra la config WireGuard existente (si la hay) al APP_DATA_DIR de la app.
+# CORRE EN EL HOST. Idempotente: solo copia si el destino no existe.
+#
+# La config NUNCA viaja en el paquete/repo — se copia localmente desde
+# /home/umbrel/umbrel/wireguard/wg_confs (la ubicación histórica) al
+# directorio de datos de esta app en el primer arranque.
+set -euo pipefail
+
+APP_DIR="${APP_DATA_DIR:-$(readlink -f "$(dirname "${BASH_SOURCE[0]}")/..")}"
+DATA_DIR="${APP_DATA_ROOT:-${APP_DIR}/data}"
+LEGACY_CONF_DIR="/home/umbrel/umbrel/wireguard/wg_confs"
+
+if [[ -f "${LEGACY_CONF_DIR}/wg0.conf" ]]; then
+  if [[ ! -f "${DATA_DIR}/wg_confs/wg0.conf" ]]; then
+    mkdir -p "${DATA_DIR}/wg_confs"
+    cp -a "${LEGACY_CONF_DIR}/wg0.conf" "${DATA_DIR}/wg_confs/wg0.conf"
+    echo "Migrada config WireGuard existente a ${DATA_DIR}/wg_confs/wg0.conf"
+  fi
+fi
+
+# El contenedor linuxserver/wireguard necesita el directorio templates.
+mkdir -p "${DATA_DIR}/templates"
