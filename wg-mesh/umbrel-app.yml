@@ -1,9 +1,48 @@
 manifestVersion: 1
 id: wg-mesh
+environment:
+  - name: WG_ENDPOINT
+    services:
+      - app
+    note: Host y puerto UDP del hub WireGuard, p. ej. vpn.example.com:51820 (salida de `wg show` en el servidor).
+  - name: WG_SERVER_PUBKEY
+    services:
+      - app
+    note: Clave pública del hub (campo public key de la interfaz en `wg show`, no la de un peer).
+  - name: WG_ADDRESS
+    services:
+      - app
+    note: IP de este peer dentro de la malla con prefijo, p. ej. 10.13.13.2/32.
+  - name: WG_ALLOWED_IPS
+    services:
+      - app
+    default: 0.0.0.0/0, ::/0
+    note: Subredes que se enrutan por el túnel. En una malla pon solo el rango, p. ej. 10.13.13.0/24.
+  - name: WG_DNS
+    services:
+      - app
+    note: Servidor DNS a usar dentro del túnel (opcional).
+  - name: WG_KEEPALIVE
+    services:
+      - app
+    default: "25"
+    note: Keepalive en segundos; recomendado detrás de NAT.
+  - name: WG_PRESHARED_KEY
+    services:
+      - app
+    note: Clave precompartida, solo si el hub la exige (opcional).
+  - name: WG_MTU
+    services:
+      - app
+    note: MTU manual, solo si hay problemas de conectividad (opcional).
+  - name: WG_PRIVATE_KEY
+    services:
+      - app
+    note: "Avanzado: clave privada fija. Vacía = se genera automáticamente y se guarda en los datos de la app (nunca se publica)."
 name: WireGuard Mesh
 tagline: Cliente WireGuard para unir este Umbrel a una malla privada
 category: networking
-version: "1.1.0"
+version: "1.2.0"
 port: 51822
 description: >-
   Cliente WireGuard que conecta este Umbrel como peer de una malla privada
@@ -24,7 +63,7 @@ description: >-
   Configuración manual alternativa: deja WG_ENDPOINT y WG_SERVER_PUBKEY vacías
   y coloca tu propio wg0.conf en el directorio de datos de la app
   (wg_confs/wg0.conf); se respetará tal cual.
-releaseNotes: "Configuración por variables de entorno desde la UI (WG_ENDPOINT, WG_SERVER_PUBKEY, WG_ADDRESS...), generación automática de clave privada, plantilla en el primer arranque y clave pública del peer en la página de estado."
+releaseNotes: "Nuevo: campos de configuración en Ajustes → App settings → WireGuard Mesh → Advanced → Environment variables (WG_ENDPOINT, WG_SERVER_PUBKEY, WG_ADDRESS, WG_ALLOWED_IPS, WG_DNS, WG_KEEPALIVE, WG_PRESHARED_KEY, WG_MTU, WG_PRIVATE_KEY)."
 icon: https://raw.githubusercontent.com/b0ga-blip/wg-umbrel-app/main/wg-mesh/icon.svg
 dependencies: []
 developer: b0ga-blip
