@@ -34,11 +34,11 @@ Todo se configura con variables de entorno desde la UI:
 
 | Variable | Obligatoria | Descripción | Ejemplo |
 |---|---|---|---|
-| `WG_ADDRESS` | ✅ | IP de este peer dentro de la malla (con prefijo) | `10.100.0.2/32` |
+| `WG_ADDRESS` | ✅ | IP de este peer dentro de la malla (con prefijo) | `10.13.13.2/32` |
 | `WG_ENDPOINT` | ✅ | Host y puerto UDP del hub | `vpn.midominio.com:51820` |
 | `WG_SERVER_PUBKEY` | ✅ | Clave pública del hub | `abc123...xyz=` |
-| `WG_ALLOWED_IPS` | — | Subredes que se enrutan por el túnel (por defecto todo: `0.0.0.0/0, ::/0`; en una malla pon solo el rango de la malla, p. ej. `10.100.0.0/24`) | `10.100.0.0/24` |
-| `WG_DNS` | — | Servidor DNS a usar dentro del túnel | `10.100.0.1` |
+| `WG_ALLOWED_IPS` | — | Subredes que se enrutan por el túnel (por defecto todo: `0.0.0.0/0, ::/0`; en una malla pon solo el rango de la malla, p. ej. `10.13.13.0/24`) | `10.13.13.0/24` |
+| `WG_DNS` | — | Servidor DNS a usar dentro del túnel | `10.13.13.1` |
 | `WG_KEEPALIVE` | — | Keepalive en segundos (recomendado detrás de NAT) | `25` |
 | `WG_PRESHARED_KEY` | — | Clave precompartida, solo si el hub la exige | `...` |
 | `WG_MTU` | — | MTU manual (por defecto la detecta WireGuard) | `1420` |
@@ -67,7 +67,7 @@ Ahí verás:
 La página de estado de la app (`https://<tu-umbrel>.local:51822/`, o desde el dashboard al abrir la app) muestra la **clave pública de este peer**. En el hub, añádela (ejemplo con `wg`):
 
 ```bash
-sudo wg set wg0 peer <CLAVE_PUBLICA_DE_ESTE_PEER> allowed-ips 10.100.0.2/32
+sudo wg set wg0 peer <CLAVE_PUBLICA_DE_ESTE_PEER> allowed-ips 10.13.13.2/32
 # y para que sobreviva a reinicios, añádela también al [Peer] de tu wg0.conf del hub
 ```
 

@@ -23,7 +23,7 @@ mkdir -p "${CONF_DIR}"
 # ---------------------------------------------------------------- Modo 1: ENV
 if [[ -n "${WG_ENDPOINT:-}" && -n "${WG_SERVER_PUBKEY:-}" ]]; then
   if [[ -z "${WG_ADDRESS:-}" ]]; then
-    log "ERROR: WG_ADDRESS vacía. Pon la IP de este peer dentro de la malla (p. ej. 10.100.0.2/32) en Ajustes → App settings → Advanced → Environment variables."
+    log "ERROR: WG_ADDRESS vacía. Pon la IP de este peer dentro de la malla (p. ej. 10.13.13.2/32) en Ajustes → App settings → Advanced → Environment variables."
     exit 1
   fi
 
@@ -88,7 +88,7 @@ cat > "${CONF}" <<'TEMPLATE'
 # 1) RECOMENDADA — Variables de entorno (sin tocar archivos):
 #    Ajustes → App settings → "WireGuard Mesh" → Advanced → Environment variables
 #    Define al menos:
-#      WG_ADDRESS        IP de este peer dentro de la malla (p. ej. 10.100.0.2/32)
+#      WG_ADDRESS        IP de este peer dentro de la malla (p. ej. 10.13.13.2/32)
 #      WG_ENDPOINT       Host:puerto del hub (p. ej. vpn.ejemplo.com:51820)
 #      WG_SERVER_PUBKEY  Clave pública del hub (salida de `wg show` en el servidor)
 #    Opcionales: WG_DNS, WG_ALLOWED_IPS, WG_PRESHARED_KEY, WG_KEEPALIVE,
