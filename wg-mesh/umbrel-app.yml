@@ -1,28 +1,30 @@
 manifestVersion: 1
 id: wg-mesh
 name: WireGuard Mesh
-tagline: Peer WireGuard de una malla privada
+tagline: Cliente WireGuard para unir este Umbrel a una malla privada
 category: networking
-version: "1.0.0"
+version: "1.1.0"
 port: 51822
 description: >-
-  Túnel WireGuard que conecta este host como peer de una malla privada hacia
-  el hub de la malla.
+  Cliente WireGuard que conecta este Umbrel como peer de una malla privada
+  (túnel punto a punto hacia un hub WireGuard). NO es un servidor VPN para
+  clientes — si buscas eso, instala la app oficial "WireGuard" (wg-easy)
+  del App Store.
 
 
-  La configuración vive en wg_confs/wg0.conf dentro de los datos de la app.
-  Tras la instalación, la config previa de /home/umbrel/umbrel/wireguard se
-  migra automáticamente si existe.
+  CONFIGURACIÓN (desde la UI de umbrelOS, sin tocar archivos):
+  Ajustes → App settings → "WireGuard Mesh" → Advanced → Environment variables.
+  Necesitas los datos de tu hub (salida de `wg show` en el servidor):
+  WG_ENDPOINT (host:puerto), WG_SERVER_PUBKEY (clave pública del hub) y
+  WG_ADDRESS (IP de este peer dentro de la malla). La clave privada se genera
+  automáticamente y se guarda en los datos de la app; la página de estado de
+  esta app muestra la clave pública para registrar el peer en el hub.
 
 
-  ⚠️ Este es un túnel punto a punto de una malla privada, NO un servidor VPN
-  para clientes. Si buscas un servidor WireGuard con UI web para tus
-  dispositivos, instala la app oficial "WireGuard" (wg-easy) del App Store.
-
-
-  La página de estado de esta app muestra el handshake y el tráfico del túnel
-  (salida de `wg show`).
-releaseNotes: ""
+  Configuración manual alternativa: deja WG_ENDPOINT y WG_SERVER_PUBKEY vacías
+  y coloca tu propio wg0.conf en el directorio de datos de la app
+  (wg_confs/wg0.conf); se respetará tal cual.
+releaseNotes: "Configuración por variables de entorno desde la UI (WG_ENDPOINT, WG_SERVER_PUBKEY, WG_ADDRESS...), generación automática de clave privada, plantilla en el primer arranque y clave pública del peer en la página de estado."
 icon: https://raw.githubusercontent.com/b0ga-blip/wg-umbrel-app/main/wg-mesh/icon.svg
 dependencies: []
 developer: b0ga-blip

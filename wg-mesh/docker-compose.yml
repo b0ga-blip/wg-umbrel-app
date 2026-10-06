@@ -11,8 +11,29 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Madrid
+      # Configuración del peer. Editables desde la UI de umbrelOS:
+      # Ajustes → App settings → "WireGuard Mesh" → Advanced → Environment variables
+      # WG_ENDPOINT + WG_SERVER_PUBKEY definidas  → wg0.conf se genera en cada
+      #   arranque desde estas variables (modo recomendado).
+      # Ambas vacías                          → se respeta un wg0.conf manual
+      #   (o el migrado desde /home/umbrel/umbrel/wireguard/ en el primer arranque).
+      - WG_ADDRESS=
+      - WG_ENDPOINT=
+      - WG_SERVER_PUBKEY=
+      - WG_DNS=
+      - WG_ALLOWED_IPS=0.0.0.0/0, ::/0
+      - WG_PRESHARED_KEY=
+      - WG_KEEPALIVE=25
+      - WG_MTU=
+      - WG_PRIVATE_KEY=
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        /render-wg0.sh
+        exec /init
     volumes:
       - ${APP_DATA_DIR}/data:/config
+      - ${APP_DATA_DIR}/scripts/render-wg0.sh:/render-wg0.sh:ro
 
   # Página de estado: mini servidor HTTP con netcat que sirve `wg show`
   # en el puerto del manifest (51822). Comparte el netns del host
@@ -32,8 +53,10 @@ services:
             printf 'HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\n\r\n'
             echo '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">'
             echo '<title>WireGuard Mesh — estado</title>'
-            echo '<style>body{font-family:monospace;background:#111;color:#0f0;padding:2rem}h1{color:#fff}a{color:#0f0}</style>'
-            echo '</head><body><h1>WireGuard Mesh — estado</h1><pre>'
+            echo '<style>body{font-family:monospace;background:#111;color:#0f0;padding:2rem}h1{color:#fff}code{background:#222;padding:.1em .4em;border-radius:4px}a{color:#0f0}</style>'
+            echo '</head><body><h1>WireGuard Mesh — estado</h1>'
+            echo '<p>La <strong>clave pública de este peer</strong> es la línea <code>public key</code> del bloque inferior — regístrala en el hub.</p>'
+            echo '<pre>'
             wg show 2>&1 || echo 'wg0 no está activa'
             echo '</pre><p><a href="/">Recargar</a></p></body></html>'
           } | nc -l -p 51822 -q 1 > /dev/null 2>&1
